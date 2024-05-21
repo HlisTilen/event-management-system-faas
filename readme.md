@@ -8,7 +8,7 @@ This project demonstrates how to develop a serverless backend for an event manag
 
 Ensure you have Node.js installed. Then, install the Serverless Framework globally:
 
-    ```console
+    ```bash
     npm install -g serverless
     ```
 
@@ -16,7 +16,7 @@ Ensure you have Node.js installed. Then, install the Serverless Framework global
 
 Create a new Serverless project:
 
-    ```console
+    ```bash
     serverless create --template aws-nodejs --path event-management-system
     cd event-management-system
     npm init -y
@@ -43,13 +43,13 @@ Create a `handler.js` file with the Lambda functions to handle the API endpoints
 
 Start Localstack:
 
-    ```console
+    ```bash
     localstack start
     ```
 
 Create DynamoDB Table and S3 Bucket Locally:
 
-    ```console
+    ```bash
     aws --endpoint-url=http://localhost:4566 dynamodb create-table --table-name event-management-system-events --attribute-definitions AttributeName=id,AttributeType=S --key-schema AttributeName=id,KeyType=HASH --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 --region us-east-1
 
     aws --endpoint-url=http://localhost:4566 s3api create-bucket --bucket event-management-system-uploads --region us-east-1
@@ -59,7 +59,7 @@ Create DynamoDB Table and S3 Bucket Locally:
 
 Start the Serverless Offline plugin to run the API locally:
 
-    ```console
+    ```bash
     serverless offline --stage local
     ```
 
@@ -69,30 +69,30 @@ Use Postman or curl to test the endpoints locally:
 
 #### 🚀 Create Event:
 
-    ```console
+    ```bash
     curl -X POST http://localhost:3000/local/events -H "Content-Type: application/json" -d '{"title":"Sample Event","description":"This is a sample event.","date":"2024-05-20"}'
     ```
 
 #### 📋 Get All Events:
 
-    ```console
+    ```bash
     curl http://localhost:3000/local/events
     ```
 
 #### 🔍 Get Event by ID:
 
-    ```console
+    ```bash
     curl http://localhost:3000/local/events/{id}
     ```
 
 #### ✏️ Update Event:
 
-    ```console
+    ```bash
     curl -X PUT http://localhost:3000/local/events/{id} -H "Content-Type: application/json" -d '{"title":"Updated Event","description":"This is an updated event.","date":"2024-06-20"}'
     ```
 
 #### ❌ Delete Event:
 
-    ```console
+    ```bash
     curl -X DELETE http://localhost:3000/local/events/{id}
     ```
