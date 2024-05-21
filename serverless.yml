@@ -1,0 +1,81 @@
+service: event-management-system
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    EVENTS_TABLE: ${self:service}-events
+    UPLOAD_BUCKET: ${self:service}-uploads
+
+plugins:
+  - serverless-offline
+  - serverless-localstack
+
+custom:
+  localstack:
+    stages:
+      - local
+
+functions:
+  createEvent:
+    handler: handler.createEvent
+    events:
+      - http:
+          path: /events
+          method: post
+          cors: true
+
+  getEvents:
+    handler: handler.getEvents
+    events:
+      - http:
+          path: /events
+          method: get
+          cors: true
+
+  getEvent:
+    handler: handler.getEvent
+    events:
+      - http:
+          path: /events/{id}
+          method: get
+          cors: true
+
+  updateEvent:
+    handler: handler.updateEvent
+    events:
+      - http:
+          path: /events/{id}
+          method: put
+          cors: true
+
+  deleteEvent:
+    handler: handler.deleteEvent
+    events:
+      - http:
+          path: /events/{id}
+          method: delete
+          cors: true
+
+resources:
+  Resources:
+    EventsDynanoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.EVENTS_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+  UploadsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: ${self:provider.environment.UPLOAD_BUCKET}
