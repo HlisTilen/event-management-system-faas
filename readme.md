@@ -8,7 +8,7 @@ This project demonstrates how to develop a serverless backend for an event manag
 
 Ensure you have Node.js installed. Then, install the Serverless Framework globally:
 
-    ```
+    ```bash
     npm install -g serverless
     ```
 
