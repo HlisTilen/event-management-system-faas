@@ -1,4 +1,4 @@
-# 🎉 Event Management System - Serverless Backend
+# 🎉 Event Management System - Serverless
 
 This project demonstrates how to develop a serverless backend for an event management system using AWS Lambda, DynamoDB, and S3 with the Serverless Framework. The backend is developed and tested locally using Localstack.
 
