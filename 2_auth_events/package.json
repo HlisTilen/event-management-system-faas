@@ -1,0 +1,22 @@
+{
+  "name": "event-management-system",
+  "version": "1.0.0",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "aws-sdk": "^2.1625.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "localstack": "^1.0.0",
+    "serverless-offline": "^13.6.0"
+  },
+  "devDependencies": {
+    "serverless-localstack": "^1.2.0"
+  }
+}

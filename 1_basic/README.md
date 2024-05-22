@@ -20,7 +20,7 @@ Create a new Serverless project:
     serverless create --template aws-nodejs --path event-management-system
     cd event-management-system
     npm init -y
-    npm install aws-sdk serverless-offline localstack
+    npm install aws-sdk serverless-offline serverless-localstack
 ```
 
 ## ⚙️ Configuration

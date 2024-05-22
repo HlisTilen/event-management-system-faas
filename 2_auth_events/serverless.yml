@@ -1,0 +1,99 @@
+service: event-management-system
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    EVENTS_TABLE: ${self:service}-events
+    JWT_SECRET: your_jwt_secret_key # Replace with a secure key
+
+plugins:
+  - serverless-offline
+  - serverless-localstack
+
+custom:
+  localstack:
+    stages:
+      - local
+
+functions:
+  createEvent:
+    handler: handler.createEvent
+    events:
+      - http:
+          path: /events
+          method: post
+          cors: true
+
+  getEvents:
+    handler: handler.getEvents
+    events:
+      - http:
+          path: /events
+          method: get
+          cors: true
+
+  getEvent:
+    handler: handler.getEvent
+    events:
+      - http:
+          path: /events/{id}
+          method: get
+          cors: true
+
+  updateEvent:
+    handler: handler.updateEvent
+    events:
+      - http:
+          path: /events/{id}
+          method: put
+          cors: true
+
+  deleteEvent:
+    handler: handler.deleteEvent
+    events:
+      - http:
+          path: /events/{id}
+          method: delete
+          cors: true
+
+  sendEventSummary:
+    handler: handler.sendEventSummary
+    events:
+      - schedule:
+          rate: rate(1 day)
+
+  hourlyTask:
+    handler: handler.hourlyTask
+    events:
+      - schedule:
+          rate: rate(1 hour)
+
+  handleSnsNotification:
+    handler: handler.handleSnsNotification
+    events:
+      - sns: eventNotification
+
+resources:
+  Resources:
+    EventsDynanoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.EVENTS_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    EventNotificationTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: eventNotification
